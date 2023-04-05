@@ -59,6 +59,8 @@ def evaluate(model, test_generator):
     # Evaluate the model
     test_loss, test_acc = model.evaluate_generator(test_generator, steps=50)
     print('Test accuracy:', test_acc)
+    print('Test loss:', test_loss)
+    
 
 # Make predictions on new images
 # import numpy as np
@@ -78,16 +80,15 @@ def evaluate(model, test_generator):
 #     print('This is a dog.')
 
 if __name__ == '__main__':
-    # model, train_generator, test_generator = setup()
-    # model.fit_generator(
-    #     train_generator,
-    #     steps_per_epoch=train_generator.n // train_generator.batch_size,
-    #     epochs=50,
-    #     validation_data=test_generator,
-    #     validation_steps=test_generator.n // test_generator.batch_size,
-    #     callbacks=[early_stopping, model_checkpoint],
-    #     use_multiprocessing=True,
-    #     workers=num_workers)
-    # evaluate(model, test_generator)
+    model, train_generator, test_generator = setup()
+    model.fit(
+        train_generator,
+        steps_per_epoch=train_generator.n // train_generator.batch_size,
+        epochs=50,
+        validation_data=test_generator,
+        validation_steps=test_generator.n // test_generator.batch_size,
+        callbacks=[early_stopping, model_checkpoint],
+        use_multiprocessing=True)
+    evaluate(model, test_generator)
     
-    print(tf.config.list_physical_devices('GPU'))
+
